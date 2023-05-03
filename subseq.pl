@@ -15,5 +15,8 @@ mymember(X,[_Y|Tl],N) :-
     N is A+1.
 % Will calculate the first index of any element X in a list
 subsequence([],_A).
-subsequence([X|Xs],[X|Ys]) :- subsequence(Xs,Ys).
-subsequence(A,[_Y|Ys]) :- subsequence(A,Ys).
+subsequence([X|Xs],[X|Ys]) :-
+    subsequence(Xs,Ys).
+
+subsequence(A,[_Y|Ys]) :- 
+    subsequence(A,Ys).
