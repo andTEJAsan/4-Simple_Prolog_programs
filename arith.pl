@@ -12,10 +12,15 @@ power(Base, Exp, Result) :-
 
 iffer(0,X,Y):- Y is X.
 iffer(1,X,Y) :-  Y is -X.
-niffer(1,X):- write("+"),write(X).
-niffer(0,X) :- write("-"),write(X). 
-biffer(0,X):- write("+"),write(X).
-biffer(1,X) :- write("-"),write(X). 
+niffer(1,X):- X>=0,write("+"),write(X).
+niffer(0,X) :- X>0,Y is -X, write(Y). 
+niffer(0,0) :- write("+0").
+niffer(1,X):- X<0,write(X).
+niffer(0,X) :- X<0,Y is -X,write("+"), write(Y).
+biffer(0,X):- X>=0,write("+"),write(X).
+biffer(1,X) :- X>=0,write("-"),write(X). 
+biffer(0,X):- X<0,write(X).
+biffer(1,X) :- X<0,Y is -X,write("+"),write(Y). 
 verify([],_,0).
 verify([X|Xs],N,Acc) :-
     verify(Xs,N div 2,NewAcc),
@@ -35,3 +40,4 @@ arith([X1|Xs]) :-
     niffer(C, X1),
     write("="),
     loop_writer(Xs,B div 2).
+
