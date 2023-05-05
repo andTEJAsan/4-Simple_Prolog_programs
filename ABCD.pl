@@ -1,4 +1,9 @@
 % A - 1 , B - 2 , C - 3 , D - 4
+name_printer(1) :- write("Alice").
+name_printer(2) :- write("Bob").
+name_printer(3) :- write("Carol").
+name_printer(4) :- write("Davis").
+name_printer(5) :- write("Ethan").
 multiplicity(X,Y,0) :- not(member(X, Y)).
 multiplicity(X,[X|Ys],N) :-
     multiplicity(X,Ys,A),
@@ -7,7 +12,6 @@ multiplicity(X,[Y|Ys],N) :-
     Y \= X,
     multiplicity(X,Ys,N).
 
-header([Head|Tail],Head).
 two_member(A,B,X) :- 
     member(A,X),
     member(B,X),
@@ -49,19 +53,32 @@ creator([],[]).
 creator([[A,B]|Xs],Y) :- creator(Xs,Z), Y = [A | Z].
 concatenator([],L,L).
 concatenator([X|Xs],A,B) :- concatenator(Xs,A,C), B = [X | C].
-double_crosser(L,[Head|Tail],X) :- multiplicity(Head,L,C) ,  C = 2 , X = Head.
+double_crosser(L,[Head|Tail],Head) :- multiplicity(Head,L,C) ,  C is 2, ! .
 double_crosser(L,[Head|Tail],X) :- double_crosser(L,Tail,X).
-
+double_crosseru(X,Y) :- double_crosser(X,X,Y).
 final(X,A,B,C,D) :-
     generator(X,[],[],[],A,B,C,D),
     check_paddleAll(C,D),
     check_paddleAlice(C),
     check_paddleBob(C).
 
+log_printer([[X,Y]],[]) :- 
+    name_printer(X),write(" paddles, "),name_printer(Y),write(" comes along.\n").
+log_printer([[X,Y] | Xs], [Head| Tail]) :- log_printer(Xs,Tail),
+    name_printer(Head),write(" returns.\n"),
+    name_printer(X),write(" paddles, "),name_printer(Y),write(" comes along.\n").
+   
+
 abcd() :-
     final([1,2,3,4],A,B,C,D),
     creator(C,E),
     concatenator(E,D,F),
-    double_crosser(F,F,Z),
+    write("---------------------------------------------\n"),
+    write("Starting Log\n"),
+    log_printer(C,D),
+    double_crosseru(F,Z),
+    name_printer(Z),write(" is the person that Paddles Twice\n"),   
+    write("End Log\n"),
+    write("---------------------------------------------\n").
 
 %check_paddle(X,Y,People_reached) :- X /= Y, X /= 1,
